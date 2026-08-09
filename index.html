@@ -101,9 +101,9 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pad
 .theme-toggle:hover { border-color: var(--border-strong); }
 main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 .hero { text-align: center; margin-bottom: 36px; padding: 8px 0 0; }
-.hero h1 { font-size: 30px; font-weight: 500; letter-spacing: -0.03em; margin-bottom: 8px; }
+.hero h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
 .hero .tagline { font-size: 11px; color: var(--text-tertiary); margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
-.hero p { font-size: 14px; color: var(--text-secondary); max-width: 580px; margin: 0 auto; line-height: 1.6; }
+.hero p { font-size: 14px; color: var(--text-secondary); max-width: 580px; margin: 0 auto; line-height: 1.6; font-weight: 400; opacity: 0.7; }
 .hero::after { content: ''; display: block; width: 40px; height: 2px; background: var(--accent); margin: 18px auto 0; }
 .select-panel { background: var(--surface); border-radius: var(--radius-sm); border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); padding: 24px 28px 28px; margin-bottom: 36px; }
 .country-section { margin-bottom: 20px; }
@@ -265,6 +265,9 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 }
 @media (max-width: 480px) {
   body { font-size: var(--text-sm); }
+  header { padding: 8px 12px; height: auto; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .brand { flex: 1 1 100%; justify-content: center; }
+  .lang-toggle, .theme-toggle { margin-top: 0; }
   main { padding: 10px 8px; }
   .result-title { font-size: var(--text-md); }
   .result-subtitle { font-size: var(--text-xs); }
@@ -285,6 +288,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   .ai-card h3 { font-size: var(--text-sm); }
   .ai-card p, .ai-card li { font-size: var(--text-xs); }
   .ai-briefing { padding: 12px 14px; font-size: var(--text-xs); }
+  .ai-result .ai-card, .ai-result .ai-briefing, .ai-result .ai-scene-confirm { margin-left: 8px; margin-right: 8px; }
   .mode-tab { padding: 8px 10px; font-size: var(--text-xs); }
   .mode-tabs { gap: 4px; padding: 3px; }
   .btn-ai-analyze { padding: 10px 20px; font-size: var(--text-sm); }
@@ -316,6 +320,12 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 .ai-input-wrap textarea { width: 100%; min-height: 90px; padding: 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-family: var(--font-sans); line-height: 1.6; resize: vertical; background: var(--bg-primary); color: var(--text-primary); }
 .ai-input-wrap textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(24,95,165,0.1); }
 .ai-examples { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.chips-toggle { display: none; background: transparent; border: 1px dashed var(--border); border-radius: 16px; padding: 3px 12px; font-size: 11px; color: var(--text-tertiary); cursor: pointer; transition: all .2s; }
+.chips-toggle:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 768px) {
+  .chip-more { display: none; }
+  .chips-toggle { display: inline-block; }
+}
 .ai-example-chip { padding: 4px 10px; font-size: 11px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; transition: all .15s; white-space: nowrap; }
 .ai-example-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
 .ai-actions { display: none; gap: 10px; margin-top: 12px; align-items: center; justify-content: center; }
@@ -553,20 +563,21 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
     <span class="ai-example-chip" onclick="fillExample(this,3)" data-en="Follow up Saudi investor" data-zh="给沙特投资人发邮件">Follow up Saudi investor</span>
     <span class="ai-example-chip" onclick="fillExample(this,4)" data-en="Present to Indian execs" data-zh="向印度高管做演示">Present to Indian execs</span>
     <span class="ai-example-chip" onclick="fillExample(this,5)" data-en="Home dinner in Botswana" data-zh="博茨瓦纳家宴拜访">Home dinner in Botswana</span>
-    <span class="ai-example-chip" onclick="fillExample(this,6)" data-en="Pitch to Norwegian VC" data-zh="向挪威风投路演">Pitch to Norwegian VC</span>
-    <span class="ai-example-chip" onclick="fillExample(this,7)" data-en="Meet Cambodian mine owner" data-zh="会见柬埔寨矿主">Meet Cambodian mine owner</span>
-    <span class="ai-example-chip" onclick="fillExample(this,8)" data-en="Korean EV buyer negotiation" data-zh="韩国新能源买家谈判">Korean EV buyer negotiation</span>
-    <span class="ai-example-chip" onclick="fillExample(this,9)" data-en="Swiss family office pitch" data-zh="瑞士家族继承人投资">Swiss family office pitch</span>
-    <span class="ai-example-chip" onclick="fillExample(this,10)" data-en="Singapore EN590 dispute" data-zh="新加坡EN590纠纷">Singapore EN590 dispute</span>
-    <span class="ai-example-chip" onclick="fillExample(this,11)" data-en="Dubai sovereign fund pitch" data-zh="迪拜主权基金路演">Dubai sovereign fund pitch</span>
-    <span class="ai-example-chip" onclick="fillExample(this,12)" data-en="Vietnam solar distributor" data-zh="越南太阳能分销商">Vietnam solar distributor</span>
-    <span class="ai-example-chip" onclick="fillExample(this,13)" data-en="Turkey textile procurement" data-zh="土耳其纺织采购">Turkey textile procurement</span>
-    <span class="ai-example-chip" onclick="fillExample(this,14)" data-en="South Africa mining deal" data-zh="南非矿业设备谈判">South Africa mining deal</span>
-    <span class="ai-example-chip" onclick="fillExample(this,15)" data-en="Mexico manufacturing plant" data-zh="墨西哥制造工厂">Mexico manufacturing plant</span>
-    <span class="ai-example-chip" onclick="fillExample(this,16)" data-en="France luxury distributor" data-zh="法国奢侈品经销">France luxury distributor</span>
-    <span class="ai-example-chip" onclick="fillExample(this,17)" data-en="Nigeria fintech partnership" data-zh="尼日利亚金融科技">Nigeria fintech partnership</span>
-    <span class="ai-example-chip" onclick="fillExample(this,18)" data-en="Poland factory expansion" data-zh="波兰工厂扩建">Poland factory expansion</span>
-    <span class="ai-example-chip" onclick="fillExample(this,19)" data-en="Italy fashion brand pitch" data-zh="向意大利品牌提案">Italy fashion brand pitch</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,6)" data-en="Pitch to Norwegian VC" data-zh="向挪威风投路演">Pitch to Norwegian VC</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,7)" data-en="Meet Cambodian mine owner" data-zh="会见柬埔寨矿主">Meet Cambodian mine owner</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,8)" data-en="Korean EV buyer negotiation" data-zh="韩国新能源买家谈判">Korean EV buyer negotiation</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,9)" data-en="Swiss family office pitch" data-zh="瑞士家族继承人投资">Swiss family office pitch</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,10)" data-en="Singapore EN590 dispute" data-zh="新加坡EN590纠纷">Singapore EN590 dispute</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,11)" data-en="Dubai sovereign fund pitch" data-zh="迪拜主权基金路演">Dubai sovereign fund pitch</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,12)" data-en="Vietnam solar distributor" data-zh="越南太阳能分销商">Vietnam solar distributor</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,13)" data-en="Turkey textile procurement" data-zh="土耳其纺织采购">Turkey textile procurement</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,14)" data-en="South Africa mining deal" data-zh="南非矿业设备谈判">South Africa mining deal</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,15)" data-en="Mexico manufacturing plant" data-zh="墨西哥制造工厂">Mexico manufacturing plant</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,16)" data-en="France luxury distributor" data-zh="法国奢侈品经销">France luxury distributor</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,17)" data-en="Nigeria fintech partnership" data-zh="尼日利亚金融科技">Nigeria fintech partnership</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,18)" data-en="Poland factory expansion" data-zh="波兰工厂扩建">Poland factory expansion</span>
+    <span class="ai-example-chip chip-more" onclick="fillExample(this,19)" data-en="Italy fashion brand pitch" data-zh="向意大利品牌提案">Italy fashion brand pitch</span>
+    <button class="chips-toggle" id="chips-toggle" onclick="toggleChips()" data-en="More ▾ (14 more)" data-zh="更多 ▾ (还有14个)">更多 ▾ (还有14个)</button>
   </div>
   <div style="padding:8px 12px;background:var(--bg-secondary);border-radius:8px;font-size:11px;color:var(--text-tertiary);text-align:center;margin-bottom:8px" data-en="Fathom AI · Cross-Border Business Cultural Intelligence" data-zh="Fathom AI · 跨境商务文化智库">Fathom AI · Cross-Border Business Cultural Intelligence</div>
   <div style="margin-top:4px;font-size:10px;color:var(--text-tertiary);line-height:1.6">
@@ -2891,6 +2902,16 @@ function fathomFetch(url, options) {
   };
 
   return attemptFetch(0);
+}
+
+function toggleChips() {
+  var chips = document.querySelectorAll('.chip-more');
+  var btn = document.getElementById('chips-toggle');
+  if (!btn) return;
+  var isOpen = chips[0] && chips[0].classList.contains('show');
+  chips.forEach(function(c) { c.classList.toggle('show', !isOpen); });
+  btn.textContent = isOpen ? '更多 ▾ (还有14个)' : '收起 ▴';
+  btn.innerHTML = isOpen ? '更多 ▾ (还有14个)' : '收起 ▴';
 }
 
 function switchMode(mode) {
