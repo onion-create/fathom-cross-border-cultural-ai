@@ -1,0 +1,16 @@
+{
+  "name": "Fathom / 知彼 — Cross-Border Business Culture Intelligence",
+  "short_name": "Fathom",
+  "description": "See what the other side considers normal. Avoid the misunderstandings that kill deals before they start.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#faf7f0",
+  "theme_color": "#c4873a",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ]
+}
