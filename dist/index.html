@@ -3378,6 +3378,12 @@ function runAIAnalysis() {
     loader.finish();
     if (response.error) throw new Error(response.error);
 
+    // Graceful fallback: if DS returned empty, still render what we have (cultural DB)
+    var hasAI = response.ai_analysis && response.ai_analysis.analysis && Object.keys(response.ai_analysis.analysis).length > 0;
+    if (!hasAI) {
+      console.warn('DS returned empty — rendering cultural DB only');
+    }
+
     lastAnalyzedResult = response;
     lastAnalyzedCountry = response.country_code;
     lastAnalyzedInput = input;
