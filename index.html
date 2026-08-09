@@ -324,6 +324,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 .chips-toggle:hover { border-color: var(--accent); color: var(--accent); }
 @media (max-width: 768px) {
   .chip-more { display: none; }
+  .chip-more.show { display: inline-block; }
   .chips-toggle { display: inline-block; }
 }
 .ai-example-chip { padding: 4px 10px; font-size: 11px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; transition: all .15s; white-space: nowrap; }
@@ -495,8 +496,8 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   .sim-round-indicator, .sim-transcript, header, footer, .mode-tabs,
   .ai-scenario-panel, .skeleton, .sim-header, .sim-subtitle,
   button, textarea, .ai-example-chip, #ai-examples, .sim-header-icon,
-  .select-panel, .ai-actions, .tagline, h1, p, .btn-ai-analyze,
-  #export-bar { display: none !important; }
+  .select-panel, .ai-actions, .tagline, .hero h1, .hero p, .hero::after, .btn-ai-analyze,
+  #export-bar, #supplement-loader { display: none !important; }
   .section-card { page-break-inside: avoid; border: 1px solid #ddd !important; margin-bottom: 10px !important; }
   details.section-card { page-break-inside: avoid; }
   .result-header { page-break-after: avoid; }
@@ -505,6 +506,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   .dimension-card { page-break-inside: avoid; }
   .profile-card { page-break-inside: avoid; }
   .ai-result { max-width: 100% !important; padding: 0 !important; }
+  .ai-card, .ai-briefing, .ai-scene-confirm, .ai-culture-card, .ai-strategy-card, .ai-insight-card { page-break-inside: avoid; border: 1px solid #ddd !important; }
   html, body { margin: 0; padding: 10px !important; }
   canvas { max-width: 100% !important; height: auto !important; }
 }
@@ -2910,8 +2912,8 @@ function toggleChips() {
   if (!btn) return;
   var isOpen = chips[0] && chips[0].classList.contains('show');
   chips.forEach(function(c) { c.classList.toggle('show', !isOpen); });
-  btn.textContent = isOpen ? '更多 ▾ (还有14个)' : '收起 ▴';
-  btn.innerHTML = isOpen ? '更多 ▾ (还有14个)' : '收起 ▴';
+  btn.textContent = isOpen ? '收起 ▴' : '更多 ▾ (还有14个)';
+  btn.innerHTML = isOpen ? '收起 ▴' : '更多 ▾ (还有14个)';
 }
 
 function switchMode(mode) {
@@ -4242,23 +4244,23 @@ function saveAsPDF() {
   var resultDiv = document.getElementById(sourceId);
   if (!resultDiv) return;
 
-  if (isAI) {
-    // AI analysis page — lightweight iframe for precise content control
-    var clone = resultDiv.cloneNode(true);
-    var toRemove = clone.querySelectorAll('.no-print, #sim-panel, #supplement-loader');
-    toRemove.forEach(function(el) { el.parentNode && el.parentNode.removeChild(el); });
-    var styles = document.querySelectorAll('style, link[rel="stylesheet"]');
-    var styleHTML = '';
-    styles.forEach(function(s) { styleHTML += s.outerHTML; });
-    var printWindow = window.open('', '_blank', 'width=800,height=600');
-    printWindow.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Fathom Analysis</title>' + styleHTML + '</head><body style="background:#fff;color:#222;padding:20px;max-width:720px;margin:0 auto">' + clone.innerHTML + '</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    setTimeout(function() { printWindow.print(); printWindow.close(); }, 300);
-  } else {
-    // Comparison page — use native print with page-break CSS (faster, no re-parsing)
-    window.print();
-  }
+  // Expand all collapsed sections for complete PDF output
+  var collapsed = document.querySelectorAll('.dimension-card:not(.open), details.section-card:not([open]), details[open="false"]');
+  var wasClosed = [];
+  collapsed.forEach(function(el) {
+    if (el.tagName === 'DETAILS') { el.setAttribute('open', ''); wasClosed.push(el); }
+    else { el.classList.add('open'); wasClosed.push(el); }
+  });
+
+  window.print();
+
+  // Restore collapsed state after print dialog closes
+  setTimeout(function() {
+    wasClosed.forEach(function(el) {
+      if (el.tagName === 'DETAILS') el.removeAttribute('open');
+      else el.classList.remove('open');
+    });
+  }, 1000);
 }
 
 // ========== Progressive Supplement: fill missing sections post-render ==========
