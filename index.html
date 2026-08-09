@@ -2921,10 +2921,16 @@ function toggleChips() {
   var chips = document.querySelectorAll('.chip-more');
   var btn = document.getElementById('chips-toggle');
   if (!btn) return;
+  var L = isEn();
   var isOpen = chips[0] && chips[0].classList.contains('show');
   chips.forEach(function(c) { c.classList.toggle('show', !isOpen); });
-  btn.textContent = !isOpen ? '收起 ▴' : '更多 ▾ (还有14个)';
-  btn.innerHTML = !isOpen ? '收起 ▴' : '更多 ▾ (还有14个)';
+  var moreText = L ? 'More ▾ (14 more)' : '更多 ▾ (还有14个)';
+  var lessText = L ? 'Collapse ▴' : '收起 ▴';
+  btn.textContent = !isOpen ? lessText : moreText;
+  btn.innerHTML = !isOpen ? lessText : moreText;
+  // Update data attributes so switchLang can re-swap them
+  btn.setAttribute('data-en', !isOpen ? 'Collapse ▴' : 'More ▾ (14 more)');
+  btn.setAttribute('data-zh', !isOpen ? '收起 ▴' : '更多 ▾ (还有14个)');
 }
 
 function switchMode(mode) {
@@ -4780,6 +4786,14 @@ function rateFeedback(rating) {
   if (el) { el.style.display = 'block'; el.textContent = isEn() ? 'Thank you for your feedback!' : '感谢反馈！'; }
   setTimeout(function() { if (el) el.style.display = 'none'; }, 3000);
 }
+// ── PWA: register service worker & enable install to home screen ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js').catch(function(e){ console.log('SW reg skipped:', e.message); });
+}
+var deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault(); deferredPrompt = e;
+});
 </script>
 </body>
 </html>
