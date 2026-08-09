@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://onion-create.github.io/fathom/"><strong>🌐 Live Demo</strong></a> &nbsp;&nbsp;
+  <a href="https://onion-create.github.io/fathom-cross-border-cultural-ai/"><strong>🌐 Live Demo</strong></a> &nbsp;&nbsp;
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-BSL%201.1-blue.svg" alt="License" /></a>
   <img src="https://img.shields.io/badge/countries-40-8b5cf6.svg" alt="Countries" />
   <img src="https://img.shields.io/badge/rules-594-eab308.svg" alt="Rules" />
