@@ -60,20 +60,6 @@ The AI-powered simulation engine scores your dialogue on cultural fit, communica
 ### 📊 Compare Any Two Cultures
 Select two countries → AI-powered clash detection across 12 dimensions → specific behavioral recommendations.
 
-### Screenshots
-
-**Country comparison — radar chart & clash detection:**
-
-<img src="static/screenshots/comparison-radar.jpg" width="320" alt="Country comparison radar chart and dimension analysis" />
-
-**AI scenario analysis — briefing, taboos & dos:**
-
-<img src="static/screenshots/analysis-briefing.jpg" width="320" alt="AI scenario analysis showing briefing, taboos and recommendations" />
-
-**AI scenario analysis — phased strategy & deliverable:**
-
-<img src="static/screenshots/analysis-strategy.jpg" width="320" alt="AI scenario analysis showing phased strategy and ready-to-use deliverable" />
-
 ---
 
 ## Countries
