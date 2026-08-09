@@ -3834,6 +3834,7 @@ function renderMultiAgentResult(data, input, country) {
 
   // If no strategy object, build one from ai_analysis data so ALL countries get rich rendering
   if (data.ai_analysis && !data.strategy) {
+    console.log('[Fathom] normalizing ai_analysis → strategy, fields:', Object.keys(data.ai_analysis.analysis || {}).length);
     const a = (data.ai_analysis && data.ai_analysis.analysis) ? data.ai_analysis.analysis : (data.ai_analysis || {});
     const st = a.strategy || {};
     data.strategy = {
@@ -3877,6 +3878,20 @@ function renderMultiAgentResult(data, input, country) {
 
     // Always use Agent D's full output as base; Agent E refinements supplement but don't replace
     var s = strat;
+    // Fallback: if normalization produced empty arrays, read raw ai_analysis fields directly
+    if (s && data.ai_analysis && data.ai_analysis.analysis) {
+      var raw = data.ai_analysis.analysis;
+      if ((!s.critical_taboos || s.critical_taboos.length === 0) && raw.taboos && raw.taboos.length > 0) s.critical_taboos = raw.taboos.map(function(t) { return { item_en: t.item_en || '', item_zh: t.item_zh || '', why_en: t.why_en || '', why_zh: t.why_zh || '', severity: 'major_risk', confidence: 'medium' }; });
+      if (!s._dos || s._dos.length === 0) s._dos = raw.dos || s._dos;
+      if (!s.risk_matrix || s.risk_matrix.length === 0) s.risk_matrix = (raw.risks || []).map(function(r) { return { probability: r.level || 'medium', risk_en: r.content_en || '', risk_zh: r.content_zh || '' }; });
+      if ((!s.strategic_guidance || !s.strategic_guidance.overall_approach_en) && raw.strategy) {
+        var rst = raw.strategy;
+        s.strategic_guidance = { overall_approach_en: rst.core_en || '', overall_approach_zh: rst.core_zh || '', phases: [{ phase_label_en: 'Negotiation', phase_label_zh: '谈判', actions_en: rst.negotiation_en || '', actions_zh: rst.negotiation_zh || '' }, { phase_label_en: 'Pacing', phase_label_zh: '节奏', actions_en: rst.pacing_en || '', actions_zh: rst.pacing_zh || '' }].filter(function(p) { return p.actions_en || p.actions_zh; }) };
+      }
+      if (s && (!s.cultural_insight_synthesis || (!s.cultural_insight_synthesis.en && !s.cultural_insight_synthesis.zh))) s.cultural_insight_synthesis = { en: raw.cultural_insight_en || '', zh: raw.cultural_insight_zh || '' };
+      if (!s.deliverable) s.deliverable = raw.deliverable || null;
+      if (!s._opening) s._opening = raw.opening || null;
+    }
     // If Agent E provided refinements, overlay them on top of Agent D's output
     if (audit && audit.refined_strategy) {
       var ref = audit.refined_strategy;
