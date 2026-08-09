@@ -304,7 +304,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   .clash-advice-grid { gap: 8px; }
   .advice-block { padding: 8px 10px; font-size: var(--text-xs); }
   .share-bar { padding: 8px 10px; }
-  .ai-scenario-panel { padding: 12px; border-radius: 10px; }
+  .ai-scenario-panel { padding: 12px 12px 16px; border-radius: 10px; }
   .ai-input-wrap textarea { padding: 12px; font-size: var(--text-sm); }
   .ai-examples { gap: 4px; }
   .ai-example-chip { font-size: 10px; padding: 2px 6px; border-radius: 14px; }
@@ -329,12 +329,13 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 .ai-examples { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; position: relative; }
 .ai-examples::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(transparent, var(--bg)); pointer-events: none; opacity: 0; transition: opacity .2s; }
 .ai-examples.has-overflow::after { opacity: 1; }
-.chips-toggle { display: none; width: 100%; margin-top: 6px; background: transparent; border: 1px dashed var(--border); border-radius: 16px; padding: 4px 0; font-size: 11px; color: var(--text-tertiary); cursor: pointer; transition: all .2s; }
+.chips-toggle-wrap { display: none; text-align: right; margin-top: 2px; }
+.chips-toggle { display: inline-block; background: transparent; border: 1px dashed var(--border); border-radius: 16px; padding: 2px 10px; font-size: 11px; color: var(--text-tertiary); cursor: pointer; transition: all .2s; }
 .chips-toggle:hover { border-color: var(--accent); color: var(--accent); }
 @media (max-width: 768px) {
   .chip-more { display: none; }
   .chip-more.show { display: inline-block; }
-  .chips-toggle { display: inline-block; }
+  .chips-toggle-wrap { display: block; }
 }
 .ai-example-chip { padding: 4px 10px; font-size: 11px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; transition: all .15s; white-space: nowrap; }
 .ai-example-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
@@ -575,7 +576,6 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
     <span class="ai-example-chip" onclick="fillExample(this,3)" data-en="Follow up Saudi investor" data-zh="给沙特投资人发邮件">Follow up Saudi investor</span>
     <span class="ai-example-chip" onclick="fillExample(this,4)" data-en="Present to Indian execs" data-zh="向印度高管做演示">Present to Indian execs</span>
     <span class="ai-example-chip" onclick="fillExample(this,5)" data-en="Home dinner in Botswana" data-zh="博茨瓦纳家宴拜访">Home dinner in Botswana</span>
-    <button class="chips-toggle" id="chips-toggle" onclick="toggleChips()" data-en="More ▾ (14 more)" data-zh="更多 ▾ (还有14个)">更多 ▾ (还有14个)</button>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,6)" data-en="Pitch to Norwegian VC" data-zh="向挪威风投路演">Pitch to Norwegian VC</span>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,7)" data-en="Meet Cambodian mine owner" data-zh="会见柬埔寨矿主">Meet Cambodian mine owner</span>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,8)" data-en="Korean EV buyer negotiation" data-zh="韩国新能源买家谈判">Korean EV buyer negotiation</span>
@@ -591,6 +591,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
     <span class="ai-example-chip chip-more" onclick="fillExample(this,18)" data-en="Poland factory expansion" data-zh="波兰工厂扩建">Poland factory expansion</span>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,19)" data-en="Italy fashion brand pitch" data-zh="向意大利品牌提案">Italy fashion brand pitch</span>
   </div>
+  <div class="chips-toggle-wrap"><button class="chips-toggle" id="chips-toggle" onclick="toggleChips()" data-en="More ▾ (14 more)" data-zh="更多 ▾ (还有14个)">更多 ▾ (还有14个)</button></div>
   <div style="padding:12px 12px;background:var(--bg-secondary);border-radius:8px;font-size:11px;color:var(--text-tertiary);text-align:center;margin:20px 0 10px" data-en="Fathom AI · Cross-Border Business Cultural Intelligence" data-zh="Fathom AI · 跨境商务文化智库">Fathom AI · Cross-Border Business Cultural Intelligence</div>
   <div style="margin-top:4px;font-size:10px;color:var(--text-tertiary);line-height:1.6">
   
@@ -3737,7 +3738,7 @@ function renderSimpleAnalysis(data, input, country) {
       + '</div>';
     cd.matched_rules.slice(0, 6).forEach(function(r) {
       var ruleText = L ? (r.rule && r.rule.en) : (r.rule && r.rule.zh);
-      if (!ruleText) ruleText = r.rule && r.rule.en;
+      if (!ruleText) ruleText = L ? (r.rule && r.rule.zh) : (r.rule && r.rule.en);
       if (!ruleText) return;
       // Detect untranslated zh: if zh == en, show a note in Chinese mode
       var isUntranslated = !L && r.rule && r.rule.zh === r.rule.en;
@@ -4036,7 +4037,8 @@ function renderMultiAgentResult(data, input, country) {
         h += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">';
         for (var ri = 0; ri < Math.min(cd.matched_rules.length, 8); ri++) {
           var rule = cd.matched_rules[ri];
-          h += '<span class="ai-tag" title="' + esc(L ? rule.rule : rule.rule) + '">' + catLabel(rule.cat, L) + '</span>';
+          var tooltipText = L ? (rule.rule && rule.rule.en || rule.rule && rule.rule.zh) : (rule.rule && rule.rule.zh || rule.rule && rule.rule.en);
+          h += '<span class="ai-tag" title="' + esc(tooltipText || '') + '">' + catLabel(rule.cat, L) + '</span>';
         }
         h += '</div></div>';
       }
