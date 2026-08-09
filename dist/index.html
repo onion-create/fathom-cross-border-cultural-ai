@@ -273,6 +273,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
   .brand-text .zh { font-size: 9px; opacity: 0.7; }
   .lang-toggle, .theme-toggle { margin-top: 0; flex-shrink: 0; }
+  .lang-toggle { margin-left: auto; }
   main { padding: 10px 8px; }
   .result-title { font-size: var(--text-md); }
   .result-subtitle { font-size: var(--text-xs); }
@@ -303,6 +304,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   .clash-advice-grid { gap: 8px; }
   .advice-block { padding: 8px 10px; font-size: var(--text-xs); }
   .share-bar { padding: 8px 10px; }
+  .ai-scenario-panel { padding: 12px; border-radius: 10px; }
   .ai-input-wrap textarea { padding: 12px; font-size: var(--text-sm); }
   .ai-examples { gap: 4px; }
   .ai-example-chip { font-size: 10px; padding: 2px 6px; border-radius: 14px; }
@@ -319,7 +321,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 .mode-tabs { display: flex; gap: 8px; margin: 0 auto 20px; max-width: 600px; background: var(--bg-secondary); border-radius: 12px; padding: 4px; }
 .mode-tab { flex: 1; padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 500; background: transparent; color: var(--text-secondary); transition: all .2s; font-family: var(--font-sans); }
 .mode-tab.active { background: var(--bg-primary); color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.ai-scenario-panel { display: none; max-width: 680px; margin: 0 auto 24px; }
+.ai-scenario-panel { display: none; max-width: 680px; margin: 0 auto 24px; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-sm); }
 .ai-scenario-panel.visible { display: block; }
 .ai-input-wrap { position: relative; }
 .ai-input-wrap textarea { width: 100%; min-height: 90px; padding: 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-family: var(--font-sans); line-height: 1.6; resize: vertical; background: var(--bg-primary); color: var(--text-primary); }
@@ -566,7 +568,6 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
   <div class="ai-input-wrap">
     <textarea id="ai-scenario-input" data-en-placeholder="Describe your cross-border business scenario..." data-zh-placeholder="描述你的跨境商务场景..."></textarea>
   </div>
-  <button class="chips-toggle" id="chips-toggle" onclick="toggleChips()" data-en="More ▾ (14 more)" data-zh="更多 ▾ (还有14个)">更多 ▾ (还有14个)</button>
   <div class="ai-examples" id="ai-examples">
     <span class="ai-example-chip" onclick="fillExample(this,0)" data-en="Meet Japanese manufacturer" data-zh="首次会见日本制造业客户">Meet Japanese manufacturer</span>
     <span class="ai-example-chip" onclick="fillExample(this,1)" data-en="Negotiate with German buyer" data-zh="与德国买家谈判降价">Negotiate with German buyer</span>
@@ -574,6 +575,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
     <span class="ai-example-chip" onclick="fillExample(this,3)" data-en="Follow up Saudi investor" data-zh="给沙特投资人发邮件">Follow up Saudi investor</span>
     <span class="ai-example-chip" onclick="fillExample(this,4)" data-en="Present to Indian execs" data-zh="向印度高管做演示">Present to Indian execs</span>
     <span class="ai-example-chip" onclick="fillExample(this,5)" data-en="Home dinner in Botswana" data-zh="博茨瓦纳家宴拜访">Home dinner in Botswana</span>
+    <button class="chips-toggle" id="chips-toggle" onclick="toggleChips()" data-en="More ▾ (14 more)" data-zh="更多 ▾ (还有14个)">更多 ▾ (还有14个)</button>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,6)" data-en="Pitch to Norwegian VC" data-zh="向挪威风投路演">Pitch to Norwegian VC</span>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,7)" data-en="Meet Cambodian mine owner" data-zh="会见柬埔寨矿主">Meet Cambodian mine owner</span>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,8)" data-en="Korean EV buyer negotiation" data-zh="韩国新能源买家谈判">Korean EV buyer negotiation</span>
@@ -589,7 +591,7 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
     <span class="ai-example-chip chip-more" onclick="fillExample(this,18)" data-en="Poland factory expansion" data-zh="波兰工厂扩建">Poland factory expansion</span>
     <span class="ai-example-chip chip-more" onclick="fillExample(this,19)" data-en="Italy fashion brand pitch" data-zh="向意大利品牌提案">Italy fashion brand pitch</span>
   </div>
-  <div style="padding:8px 12px;background:var(--bg-secondary);border-radius:8px;font-size:11px;color:var(--text-tertiary);text-align:center;margin-bottom:8px" data-en="Fathom AI · Cross-Border Business Cultural Intelligence" data-zh="Fathom AI · 跨境商务文化智库">Fathom AI · Cross-Border Business Cultural Intelligence</div>
+  <div style="padding:12px 12px;background:var(--bg-secondary);border-radius:8px;font-size:11px;color:var(--text-tertiary);text-align:center;margin:20px 0 10px" data-en="Fathom AI · Cross-Border Business Cultural Intelligence" data-zh="Fathom AI · 跨境商务文化智库">Fathom AI · Cross-Border Business Cultural Intelligence</div>
   <div style="margin-top:4px;font-size:10px;color:var(--text-tertiary);line-height:1.6">
   
 </div>
