@@ -4190,11 +4190,7 @@ function renderMultiAgentResult(data, input, country) {
     var simHTML = '<div class="ai-sim-section"><h4>' + (L ? 'Practice Dialogue' : '模拟对话') + '</h4><textarea id="sim-input" placeholder="' + (L ? 'Type your response...' : '输入你的回复...') + '" style="width:100%;min-height:46px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:12px"></textarea><button onclick="runSimulation()" id="btn-sim" style="margin-top:6px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer">' + (L ? 'Get Feedback' : '获取反馈') + '</button><div id="sim-result" style="margin-top:10px;display:none"></div></div>';
     resultDiv.innerHTML += simHTML;
   }
-
-  // Auto-start interactive simulation dialog directly (no button click required)
-  if (country) {
-    setTimeout(function() { startSimulation(input, country); }, 400);
-  }
+  // Simulation starts only when the user clicks the CTA button
 }
 
 function saveAsPDF() {
