@@ -451,8 +451,6 @@ main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
 .sim-cultural-insight { font-size: 12px; color: var(--text-secondary); padding: 12px 16px; background: linear-gradient(135deg, var(--bg), var(--blue-light)); border-radius: 10px; margin-top: 12px; border-left: 3px solid var(--accent); line-height: 1.65; }
 /* ── Continue/Reset Buttons ── */
 .sim-footer-actions { display: flex; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-.btn-sim-cta { padding: 13px 30px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(160,90,44,0.22); }
-.btn-sim-cta:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(160,90,44,0.3); }
 .btn-sim-continue { padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; background: var(--accent); color: #fff; }
 .btn-sim-continue:hover { background: var(--accent-hover); transform: translateY(-1px); }
 .btn-sim-reset-small { padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary); transition: all 0.2s; font-family: inherit; }
@@ -3728,12 +3726,6 @@ function renderSimpleAnalysis(data, input, country) {
   if (data.pipeline && data.pipeline.ms) h += '<div style="opacity:0.7;margin-top:4px">' + (L ? 'Generated in ' : '生成耗时 ') + data.pipeline.ms + 'ms' + (L ? '' : '  · 仅一次 AI 调用') + '</div>';
   h += '</div>';
 
-  // === Simulation CTA (user clicks to open practice room) ===
-  h += '<div style="text-align:center;margin-top:20px">';
-  h += '<button class="btn-sim-cta" onclick="startSimulation(lastAnalyzedInput, lastAnalyzedCountry)">🎯 ' + (L ? 'Practice the Conversation' : '开始模拟对话练习') + '</button>';
-  h += '<div style="font-size:11px;color:var(--text-tertiary);margin-top:6px">' + (L ? 'Rehearse your opening lines before the real meeting.' : '在上场前，先演练一遍你的开场白。') + '</div>';
-  h += '</div>';
-
   resultDiv.innerHTML = h;
   resultDiv.style.display = '';
   resultDiv.classList.add('visible');
@@ -3750,11 +3742,14 @@ function renderSimpleAnalysis(data, input, country) {
     }, i * 180);
   });
 
-  // Simulation starts only when the user clicks the CTA button above
+  // Render simulation practice room (no auto-scroll)
+  if (lastAnalyzedCountry) {
+    setTimeout(function() { startSimulation(input, lastAnalyzedCountry, false); }, 400);
+  }
 }
 
 // ============== SIMULATION DIALOGUE ==============
-function startSimulation(scenario, countryCode) {
+function startSimulation(scenario, countryCode, doScroll) {
   const L = isEn();
   const simPanel = document.getElementById('sim-panel');
   if (!simPanel) return;
@@ -3793,7 +3788,7 @@ function startSimulation(scenario, countryCode) {
     '<div class="sim-round-indicator" id="sim-round-indicator"><span class="sim-round-dot"></span> ' + (L ? 'Round 1 — Type your first message to the counterpart' : '第 1 轮 — 输入你想对对方说的话') + '</div>' +
     '<div class="sim-feedback" id="sim-feedback" style="display:none"></div>';
 
-  simPanel.scrollIntoView({behavior:'smooth'});
+  if (doScroll !== false) simPanel.scrollIntoView({behavior:'smooth'});
   setTimeout(function() {
     const inp = document.getElementById('sim-message-input');
     if (inp) inp.focus();
@@ -4190,7 +4185,11 @@ function renderMultiAgentResult(data, input, country) {
     var simHTML = '<div class="ai-sim-section"><h4>' + (L ? 'Practice Dialogue' : '模拟对话') + '</h4><textarea id="sim-input" placeholder="' + (L ? 'Type your response...' : '输入你的回复...') + '" style="width:100%;min-height:46px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:12px"></textarea><button onclick="runSimulation()" id="btn-sim" style="margin-top:6px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer">' + (L ? 'Get Feedback' : '获取反馈') + '</button><div id="sim-result" style="margin-top:10px;display:none"></div></div>';
     resultDiv.innerHTML += simHTML;
   }
-  // Simulation starts only when the user clicks the CTA button
+
+  // Render the simulation practice room as part of the result (no auto-scroll)
+  if (country) {
+    setTimeout(function() { startSimulation(input, country, false); }, 400);
+  }
 }
 
 function saveAsPDF() {
